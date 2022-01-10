@@ -1,0 +1,50 @@
+CREATE TRIGGER check_nome 
+BEFORE INSERT ON ATTORI 
+EXECTURE PROCEDURE <nome_funzione> (<parametri>)
+
+PL/pgSQL ESEMPIO
+DECLARE
+<nome var> <type>
+minimo INTEGER;
+BEGIN
+minimo:=(SELECT MIN(voto) FROM frequenza);
+IF ((SELECT MIN(voto) FROM frequenza)>27)) THEN
+RAISE EXCEPTION 'Corso troppo facile';
+ENDIF;
+END
+
+
+
+ESEMPIO COMPLETO
+CREATE FUNCTION circ(r INTEGER) RETURNS NUMERIC AS $BODY$
+DECLARE
+	costante_pi CONSTANT NUMERIC:=pi();
+	risultato NUMERIC;
+BEGIIN
+	risultato:=2*costante_pi*r;
+	RETURN RISULTATO;
+END
+$BODY$
+LANGUAGE PLPGSQL;
+
+ALTRO ESEMPIO
+DECLARE
+risultato corso.crediti%TYPE
+BEGIN
+	SELECT SUM(crediti)INTO risultato	
+	FROM corso JOIN frequenza USING id_corso
+	WHERE id_studente=studente
+END
+
+
+
+SINTASSI PER DEFINIRE UNA FUNZIONE IN PLPGSQL DA USARE IN UN TRIGGER:
+
+CREATE FUNCTION <nome_funzione>() RETURNS TRIGGER AS $BODY$
+DECLARE 
+<variabili>
+BEGIN
+<istruzioni>
+END
+$BODY$
+LANGUAGE PLPGSQL;
