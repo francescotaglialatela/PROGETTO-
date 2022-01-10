@@ -1,0 +1,95 @@
+TUTTE I VALORI PRESENTI NELLE TABELLE:
+
+
+INSERT INTO INSEGNANTE
+VALUES
+('Teresa','Rega','regateresa00','psW00rT!','100000000','f','1965-12-01'),
+('Antonio','Porzio','porzioantonio29','psW29pA!','100000001','m','1968-01-13'),
+('Vincenzo','De Rosa','derosavincenzo82','psW82drV!','100000002','m','1964-06-25'),
+('Luigi','Matteotti','matteottiluigi76','psW76mL!','100000003','m','1970-09-08'),
+('Giovanni','Verdoni','verdonigiovanni65','psW65vG!','100000004','m','1965-10-15');
+
+INSERT INTO STUDENTE
+VALUES
+('Davide','Rega','regadavide15','psW15rD!','200000000'),
+('Carla','Di Martino','dimartinocarla69','psW69dmC!','200000001'),
+('Tommaso','Lepri','lepritommaso67','psW67lP!','200000002'),
+('Ottavio','Silva','silvaottavio88','psW88sO!','200000003'),
+('Michela','Giordano','giordanomichela05','psW05gM!','200000004'),
+('Giuseppe','Prestini','giuseppeprestini50','psW50gP!','200000005'),
+('Mariano','Egregi','marianoegregi18','psW18mE!','200000006');
+
+INSERT INTO TEST (Nome,Valutato)
+VALUES
+('Fisica','TRUE'),
+('Geometria','TRUE'),
+('Analisi','TRUE'),
+('Programmazione','TRUE'),
+('Inglese','TRUE');
+
+INSERT INTO QUIZ_APERTO
+VALUES
+('Fisica','300000000','Qual è la formula della velocità media?','150','0','2'),
+('Geometria','300000001','Enunciare il Lemma di Steintz.','150','0','2'),
+('Analisi','300000002','Enunciare un teorema a piacere.','150','0','1'),
+('Programmazione','300000003','Che cos è una lista?','150','0','1'),
+('Inglese','300000004','Scrivere gli aggettivi possessivi.','150','0','3');
+
+INSERT INTO QUIZ_MULTIPLO
+VALUES
+('Fisica','400000000','Seleziona la formula corretta tra quelle elencate:','A=VF-VI/tF-tI','4','1','0'),
+('Geometria','400000001','Selezionare l affermazione corretta tra quelle elencate:','Uno spazio euclideo è formato da una terna ordinata composta da uno spazio vettoriale euclideo,da un insieme di punti, e da un applicazione interna','4','1','0'),
+('Analisi','400000002','Selezionare l nunciato sbagliato:','Teorema di Waierstrass=Una funzione continua in un intervallo chiuso e limitato superiormente e inferiormente,ha minimo e massimo assoluto','4','1','0'),
+('Programmazione','400000003','Che cos uno stack?','Uno stack è una struttura astratta,che ragiona come una pila,esegue azioni di tipo push e pop','4','1','0'),
+('Inglese','400000004','Selezionare la frase corretta:','I enjoy working during the weekend','4','2','0');
+
+INSERT INTO CREA VALUES
+('100000000','Fisica'),
+ ('100000001','Geometria'),
+ ('100000002','Analisi'),
+ ('100000003','Programmazione'),
+ ('100000004','Inglese');
+
+Insert into elenco_risposte values
+('a','A=VF-VI/tF-tI','400000000'),
+('b','A=V*t','400000000'),
+('c','V=a+t','400000000'),
+('d','A=Vf+Vi/tf-ti','400000000');
+
+Insert into elenco_risposte values
+('a','Uno spazio euclideo non contiene un prodotto scalare','400000001'),
+('b','Uno spazio euclideo è formato da una terna ordinata composta da uno spazio vettoriale euclideo,da un insieme di punti, e da un applicazione interna ','400000001'),
+('c','Uno spazio euclideo non contiene sottospazi','400000001'),
+('d','Uno spazio euclideo non è dotato di','400000001');
+
+Insert into elenco_risposte values
+('a','Teorema di Waierstrass=Una funzione continua in un intervallo chiuso e limitato superiormente e inferiormente,ha minimo e massimo assoluto','400000002'),
+('b','Teorema dei valori intermedi=Una funzione continua di un intervallo chiuso con limite inferiore ha minimo e massimo','400000002'),
+('c','Teorema di derivabilità=Se una funzione è derivabile in un punto allora non è continua','400000002'),
+('d','Teorema di unicità=Se una funzione in un punto ha limite non finito allora è unico','400000002');
+
+Insert into elenco_risposte values
+('a','Uno stack è una struttura concreta, che può eseguire operazioni di inserimento in lista','400000003'),
+('b','Uno stack è una struttura di gestione della memoria a libero accesso per gli utenti','400000003'),
+('c','Uno stack è una struttura astratta,che ragiona come una pila,esegue azioni di tipo push e pop','400000003'),
+('d','Uno stack è una struttura iterativa gestita con gli indici in modo contiguo','400000003');
+
+Insert into elenco_risposte values
+('a','I enjoy working during the weekend.','400000004'),
+('b',' If only I have a new house!','400000004'),
+('c','Ride in the countryside is very pleasant.','400000004'),
+('d','I wish he could stop telling lies.','400000004');
+
+insert into svolge values 
+('Fisica','200000000','null','a','300000000','400000000'),
+('Programmazione','200000002','null','c','300000003','400000003'),
+('Inglese','200000001','null','b','300000004','400000004'),
+('Geometria','200000003','null','a','300000001','400000001'),
+('Analisi','200000004','null','d','300000002','400000002');
+
+insert into corregge values
+('Fisica','true','0','300000000','100000000'),
+('Programmazione','true','0','300000003','100000003'),
+('Analisi','false','0','300000002','100000002'),
+('Inglese','false','0','300000004','100000004'),
+('Geometria','true','0','300000001','100000001');

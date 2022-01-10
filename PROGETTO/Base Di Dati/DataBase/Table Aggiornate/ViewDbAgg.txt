@@ -1,0 +1,28 @@
+VIEW:
+
+create view vista_quizmultiplo as
+select qm.idquizmultiplo,qm.nometest,qm.domanda,er.opzione,er.testopzione
+from quiz_multiplo as qm,elenco_risposte as er
+where qm.idquizmultiplo=er.idquizmultiplo 
+
+create view vista_quizaperto as
+select qa.nometest,qa.idquizaperto,qa.domanda,qa.maxtextrisposta
+from quiz_aperto as qa
+
+create view vista_punteggio as
+select qa.ptmin,qa.ptmax,qm.punteggioesatto,qm.punteggiosbagliato,sv.punteggiototalizzato,tes.punteggiomax
+from quiz_aperto as qa, quiz_multiplo as qm, svolge as sv, test as tes
+where qa.nometest=qm.nometest and sv.nometest=qm.nometest and tes.nome=sv.nometest 
+
+create view vista_listaesamisvolti as
+select st.nome,st.cognome,st.idstudente,sv.nometest,sv.punteggiototalizzato
+from studente as st, svolge as sv,crea as cr
+where st.idstudente=sv.idstudente and (cr.nometest) in (select cr.nometest
+				 from crea as cr,insegnante as ins
+				 where cr.idinsegnante=ins.idinsegnante)
+
+
+create view punteggi_esame as 
+select qm.nometest,qm.punteggioesatto,qa.ptmax
+from quiz_multiplo as qm, quiz_aperto as qa
+where qm.nometest=qa.nometest

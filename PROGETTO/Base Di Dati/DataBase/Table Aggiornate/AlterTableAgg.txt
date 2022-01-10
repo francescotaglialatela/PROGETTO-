@@ -1,0 +1,33 @@
+Alter Table/Vincoli da rispettare:
+
+Alter table quiz_aperto
+add constraint check_punteggio
+check (ptmin>=0 and ptmax<=10);
+
+alter table test
+add constraint check_punteggio
+check (punteggiomax>0);
+
+alter table quiz_multiplo
+add constraint check_punteggio
+check (punteggioesatto>0);
+
+alter table svolge 
+add constraint check_punteggio
+check (punteggiototalizzato>=0);
+
+alter table studente
+add constraint check_sesso
+check (sesso='m'or sesso='f' or sesso='M' or sesso='F');
+
+alter table insegnante
+add constraint check_sesso
+check (sesso='m'or sesso='f' or sesso='M'or sesso='F');
+
+alter table insegnante
+add constraint check_data
+check (datan>='1957-01-01' and datan<='1996-01-01');
+
+alter table studente
+add constraint check_data
+check (datan>='1990-01-01' and datan<='2004-01-01');

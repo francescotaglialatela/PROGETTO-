@@ -1,0 +1,101 @@
+CREATE TABLE INSEGNANTE
+(
+	Nome varchar(40) NOT NULL,
+	Cognome varchar(40) NOT NULL,
+	Login varchar(40) UNIQUE NOT NULL,
+	Password varchar(40),
+	idInsegnante int PRIMARY KEY,
+                Sesso char(1),
+	DataN date
+);
+
+CREATE TABLE STUDENTE
+(
+	Nome varchar(40) NOT NULL,
+	Cognome varchar(40) NOT NULL,
+	Login varchar(40) UNIQUE NOT NULL,
+	Password varchar(40),
+	idStudente int PRIMARY KEY,
+                Sesso char(1),
+	DataN date
+);
+
+CREATE TABLE TEST
+(
+	Nome varchar(40) PRIMARY KEY,
+	Valutato boolean,
+	PunteggioMAX int
+);
+
+CREATE TABLE CREA
+(
+	idInsegnante char(9),
+	nomeTest varchar(40),
+	
+	FOREIGN KEY (idInsegnante) REFERENCES INSEGNANTE(idinsegnante),
+	FOREIGN KEY (nomeTest) REFERENCES TEST(nome)
+);
+
+CREATE TABLE QUIZ_MULTIPLO
+(
+	nomeTest varchar(40),
+	idQuizMultiplo char(9) PRIMARY KEY,
+	Domanda varchar(150),
+	RispostaCorretta char(1),
+	NumeroOpzioni int,
+	PunteggioEsatto real,
+	PunteggioSbagliato real,
+	
+	FOREIGN KEY (nomeTest) REFERENCES TEST(Nome)
+);
+
+CREATE TABLE QUIZ_APERTO
+(
+	nomeTest varchar(40),
+	idQuizAperto char(9) PRIMARY KEY,
+	Domanda varchar(150),
+	maxTextRisposta int,
+	ptMIN real,
+	ptMAX real,
+	
+	FOREIGN KEY (nomeTest) REFERENCES TEST(Nome)
+);
+
+CREATE TABLE ELENCO_RISPOSTE
+(
+	Opzione char(1),
+	TestOpzione varchar(150),
+	idQuizMultiplo char(9),
+	
+	FOREIGN KEY(idQuizMultiplo) REFERENCES QUIZ_MULTIPLO(idQuizMultiplo)
+	
+);
+
+CREATE TABLE SVOLGE
+(
+	nomeTest varchar(40),
+	idStudente char(9),
+	RispostaQuizAperto varchar(150),
+	RispostaQuizMultiplo char(1),
+	idQuizAperto char(9),
+	idQuizMultiplo char(9),
+	PunteggioTotalizzato real,
+	
+	FOREIGN KEY(nomeTest) REFERENCES TEST(Nome),
+	FOREIGN KEY(idQuizAperto) REFERENCES QUIZ_APERTO(idQuizAperto),
+	FOREIGN KEY(idQuizMultiplo) REFERENCES QUIZ_MULTIPLO(idQuizMultiplo),
+	FOREIGN KEY(idStudente) REFERENCES STUDENTE(idStudente)
+);
+
+CREATE TABLE CORREGGE
+(
+	nomeTest varchar(40),
+	Valutato boolean,
+	Correzione real,
+	idQuizAperto char(9),
+	idInsegnante char(9),
+	
+	FOREIGN KEY (idQuizAperto) REFERENCES QUIZ_APERTO(idQuizAperto),
+	FOREIGN KEY (nomeTest) REFERENCES TEST(nome),
+	FOREIGN KEY (idInsegnante) REFERENCES INSEGNANTE(idInsegnante)
+	

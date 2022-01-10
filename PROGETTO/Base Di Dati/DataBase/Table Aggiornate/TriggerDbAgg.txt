@@ -1,0 +1,35 @@
+FUNZIONI + TRIGGER:
+
+create function somma_ptmax() 
+returns trigger as
+$body$
+declare 
+sommapunteggio_multiplo integer;
+sommapunteggio_aperto integer;
+sommapunteggio_totale integer;
+begin 
+select SUM(qm.punteggioesatto+tes.punteggiomax) into sommapunteggio_multiplo
+from quiz_multiplo as qm,test as tes
+where tes.nometest=qm.nometest;
+
+
+select sum(qa.ptmax+tes.punteggiomax)into sommapunteggio_aperto
+from quiz_aperto as qa,test as tes
+where tes.nometest=qm.nometest;
+
+sommapunteggio_totale:=sommapunteggio_aperto+sommapunteggio_multiplo;
+
+update test as tes
+set punteggiomax=sommapunteggio_totale
+where tes.nometest=nometest;
+
+return null;
+end;
+$body$
+language plpgsql;
+
+-----Trigger funzione:--------
+create trigger somma_punteggio
+after insert 
+on punteggi_esame
+execute procedure somma_ptmax()
