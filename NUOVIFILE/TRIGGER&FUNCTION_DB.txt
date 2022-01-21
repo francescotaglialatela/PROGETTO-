@@ -1,0 +1,74 @@
+create function assegna_pt_auto() returns trigger as
+$$
+declare
+c1 cursor for(select RispostaA,idQuizA
+			 from risposte
+			 where RispostaA is NULL);
+result_ risposte%rowtype;
+
+begin
+	open c1;
+		loop
+			fetch c1 into result_;
+			
+			UPDATE RISPOSTE as R 
+			SET PunteggioAssegnato= (PuntMin) in(select PuntMin
+									   from quiz_a as qa
+									   where result_.idQuizA=qa.idQuizA)
+				and VerificaCorrezione= TRUE
+			WHERE RispostaA is NULL;
+		exit when not found;
+		end loop;
+	close  c1;
+	return null;
+end;
+$$ language plpgsql;
+
+CREATE TRIGGER valutazione_auto
+AFTER INSERT ON RISPOSTE
+FOR EACH ROW 
+EXECUTE procedure assegna_pt_auto();
+
+
+
+CREATE FUNCTION flagV() RETURNS TRIGGER AS
+$$
+BEGIN
+	UPDATE RISPOSTE
+	SET VERIFICACORREZIONE=TRUE 
+	WHERE RISPOSTAA IS NOT NULL AND PUNTEGGIOASSEGNATO IS NOT NULL OR 0;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER flag_Verificato
+AFTER UPDATE ON RISPOSTE
+FOR EACH ROW 
+EXECUTE PROCEDURE flagV();
+
+
+CREATE FUNCTION Visiona_Voto() returns trigger as
+$$
+declare
+	c1 cursor for(select studente,idtest
+				  from vista_appoggio
+				  where verificacorrezione is not false);
+res vista_appoggio%rowtype;
+begin
+	open c1;
+	loop
+		fetch c1 into res;
+			update test_corretti
+			set VisionaPunteggio= TRUE
+			where Studente=res.Studente AND NOMETEST=res.NomeTest;
+		exit when not found;
+	end loop;
+	close c1;
+	
+return null;
+end;
+$$ language plpgsql;
+		
+CREATE TRIGGER visionaVOTO
+AFTER UPDATE ON RISPOSTE
+FOR EACH ROW
+EXECUTE PROCEDURE visiona_voto();
