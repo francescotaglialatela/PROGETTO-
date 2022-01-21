@@ -2,14 +2,10 @@ CREATE VIEW ELENCO_TEST AS
 SELECT idTest, NomeTest,Insegnante
 FROM TEST;
 
-CREATE VIEW Test_Corretti AS
-SELECT NomeTest,Studente,VisionaPunteggio,Punteggio
-FROM TEST AS T, RISPOSTE AS R
-WHERE NOT EXISTS (SELECT VERIFICACORREZIONE
-				 FROM RISPOSTE AS R1
-				 WHERE R.idTest=R1.idTest AND 
-				 	R1.VerificaCorrezione=FALSE and
-					R.VerificaCorrezione=FALSE);
+CREATE VIEW test_corretti as
+SELECT nomeTest, studente,visionapunteggio,punteggio
+FROM test as t, risposte as r
+WHERE  t.idTest=R.idTest and r.VerificaCorrezione=TRUE;
 
 CREATE VIEW ELENCO_RISPOSTE_STUDENTE AS
 SELECT NOMETEST,STUDENTE,RISPOSTAA,VERIFICACORREZIONE
@@ -25,6 +21,6 @@ WHERE T.idTest=CDQ.idTest and CDA.idTest=T.idTest
 
 CREATE VIEW VISTA_APPOGGIO AS
 SELECT R.Studente,R.VerificaCorrezione,R.RispostaA,R.idQuizA,T.NomeTest
-from RISPOSTE AS R,COMPOSTO_DA_QA AS QA,Studente as S,Test as T
+from RISPOSTE AS R,COMPOSTO_DA_QA AS QA,Studente as S,Test as T 
 where R.Studente=S.idStudente and R.idTest=QA.idTest and 
 	R.idQuizA = QA.idQuizA and T.idTest=R.idTest;
