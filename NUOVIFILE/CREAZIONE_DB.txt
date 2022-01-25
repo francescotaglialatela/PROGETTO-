@@ -31,15 +31,15 @@ CREATE TABLE TEST(
 CREATE TABLE QUIZ_M(
 	idQuizM int PRIMARY KEY,
 	Domanda varchar(200) NOT NULL
+	RispostaC char(1) NOT NULL,
+	PuntC real,
+	puntS real,
 );
 
 CREATE TABLE ELENCO_OPZIONI(
 	idQuizM int,
 	Opzione char(1) NOT NULL,
 	TestoOpzione varchar(200) NOT NULL,
-	RispostaC char(1) NOT NULL,
-	PuntC real,
-	puntS real,
 	
 	FOREIGN KEY(idQuizM) REFERENCES QUIZ_M(idQuizM)
 );
@@ -57,11 +57,12 @@ CREATE TABLE RISPOSTE(
 	idQuizA int,
 	idQuizM int,
 	idTest int,
-	CodiceRisposte int PRIMARY KEY,
 	RispostaA varchar(300),
 	RispostaM char(1),
 	VerificaCorrezione boolean NOT NULL default FALSE,
-	PunteggioAssegnato real,
+	PunteggioAssegnato real default 0,
+	PuntiQM rel default 0,
+	PunteggioTot real default 0,
 	
 	FOREIGN KEY(Studente) REFERENCES STUDENTE(idStudente),
 	FOREIGN KEY(Insegnante) REFERENCES INSEGNANTE(idInsegnante),

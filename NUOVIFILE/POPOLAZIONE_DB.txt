@@ -76,7 +76,7 @@ insert into risposte values
 (2002,1003,3003,4003,5003,6001,'null','c',FALSE),
 (2001,1004,3004,4004,5004,6002,'null','b',FALSE),
 (2003,1001,3001,4001,5001,6003,'null','a',FALSE),
-(2004,1003,3000,4002,5002,6004,'null','d',FALSE);
+(2004,1003,3002,4002,5002,6004,'null','d',FALSE);
 
 insert into composto_da_qm values
 (4000,5000),

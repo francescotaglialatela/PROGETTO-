@@ -2,10 +2,10 @@ CREATE VIEW ELENCO_TEST AS
 SELECT idTest, NomeTest,Insegnante
 FROM TEST;
 
-CREATE VIEW test_corretti as
+create view test_corretti as
 SELECT nomeTest, studente,visionapunteggio,punteggio
-FROM test as t, risposte as r
-WHERE  t.idTest=R.idTest and r.VerificaCorrezione=TRUE;
+from test as t, risposte as r
+where  t.idTest=R.idTest and r.VerificaCorrezione=TRUE;
 
 CREATE VIEW ELENCO_RISPOSTE_STUDENTE AS
 SELECT NOMETEST,STUDENTE,RISPOSTAA,VERIFICACORREZIONE
@@ -21,6 +21,22 @@ WHERE T.idTest=CDQ.idTest and CDA.idTest=T.idTest
 
 CREATE VIEW VISTA_APPOGGIO AS
 SELECT R.Studente,R.VerificaCorrezione,R.RispostaA,R.idQuizA,T.NomeTest
-from RISPOSTE AS R,COMPOSTO_DA_QA AS QA,Studente as S,Test as T 
+from RISPOSTE AS R,COMPOSTO_DA_QA AS QA,Studente as S,Test as T
 where R.Studente=S.idStudente and R.idTest=QA.idTest and 
 	R.idQuizA = QA.idQuizA and T.idTest=R.idTest;
+
+create view Punteggio_qm as
+select r.idQuizM,r.Studente,r.puntiQM,r.RispostaM,PuntC,qm.PuntS,qm.RispostaC
+from risposte as r, quiz_m as qm
+where r.idQuizM = qm.idQuizM 
+
+create view calcolo_punteggi_test as
+select Studente, PunteggioAssegnato, PuntiQM,PunteggioTOT
+from risposte as r
+where (studente,idQuizM,idQuizA,r.idTest) in (  select idStudente,r.idQuizM,r.idQuizA,r.idTest
+				 								from Studente ,composto_da_qa as cma,
+											  composto_da_qm as cmq
+				 								where r.studente = idStudente
+								   					and r.idQuizM=idQuizM and 
+								   					r.idQuizA=idQuizA and r.idTest=cmq.idtest
+								   					and r.idTest=cma.idTest);
