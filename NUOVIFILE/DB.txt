@@ -1,0 +1,267 @@
+CREATE TABLE STUDENTE(
+	idStudente int PRIMARY KEY,
+	Nome varchar(40) NOT NULL,
+	Cognome varchar(40) NOT NULL,
+	Username varchar(30) NOT NULL,
+	Password varchar(16) NOT NULL,
+	Sesso char(1) NOT NULL,
+	DataN date
+);
+
+CREATE TABLE INSEGNANTE(
+	idInsegnante int PRIMARY KEY,
+	Nome varchar(40) NOT NULL,
+	Cognome varchar(40) NOT NULL,
+	Username varchar(30) NOT NULL,
+	Password varchar(16) NOT NULL,
+	Sesso char(1) NOT NULL,
+	DataN date
+);
+
+CREATE TABLE TEST(
+	idTest int PRIMARY KEY,
+	Insegnante int,
+	NomeTest varchar(30) NOT NULL,
+	Punteggio real,
+	VisionaPunteggio boolean NOT NULL default FALSE,
+	
+	FOREIGN KEY(Insegnante) REFERENCES INSEGNANTE(idInsegnante)
+);
+
+CREATE TABLE QUIZ_M(
+	idQuizM int PRIMARY KEY,
+	Domanda varchar(200) NOT NULL,
+	RispostaC char(1) NOT NULL,
+	PuntC real,
+	puntS real
+);
+
+CREATE TABLE ELENCO_OPZIONI(
+	idQuizM int,
+	Opzione char(1) NOT NULL,
+	TestoOpzione varchar(200) NOT NULL,
+	
+	FOREIGN KEY(idQuizM) REFERENCES QUIZ_M(idQuizM)
+);
+
+CREATE TABLE QUIZ_A(
+	idQuizA int PRIMARY KEY,
+	Domanda varchar(200) NOT NULL,
+	PuntMax real,
+	PuntMin real
+);
+
+CREATE TABLE RISPOSTE(
+	Studente int,
+	Insegnante int,
+	idQuizA int,
+	idQuizM int,
+	idTest int,
+	RispostaA varchar(300),
+	RispostaM char(1),
+	VerificaCorrezione boolean NOT NULL default FALSE,
+	PunteggioAssegnato real default 0,
+	PuntiQM real default 0,
+	PunteggioTot real default 0,
+	
+	FOREIGN KEY(Studente) REFERENCES STUDENTE(idStudente),
+	FOREIGN KEY(Insegnante) REFERENCES INSEGNANTE(idInsegnante),
+	FOREIGN KEY(idQuizA) REFERENCES QUIZ_A(idQuizA),
+	FOREIGN KEY(idQuizM) REFERENCES QUIZ_M(idQuizM),
+	FOREIGN KEY(idTest) REFERENCES TEST(idTest)
+);
+
+CREATE TABLE COMPOSTO_DA_QM(
+	idQuizM int,
+	idTest int,
+	
+	FOREIGN KEY(idQuizM) REFERENCES QUIZ_M(idQuizM),
+	FOREIGN KEY(idTest) REFERENCES TEST(idTest)
+);
+
+CREATE TABLE COMPOSTO_DA_QA(
+	idQuizA int,
+	idTest int,
+	
+	FOREIGN KEY(idQuizA) REFERENCES QUIZ_A(idQuizA),
+	FOREIGN KEY(idTest) REFERENCES TEST(idTest)
+);
+
+ALTER TABLE STUDENTE
+ADD CONSTRAINT c_sesso_s
+CHECK (Sesso='M' OR Sesso='F');
+
+ALTER TABLE INSEGNANTE
+ADD CONSTRAINT c_sesso_i
+CHECK (Sesso='M' OR Sesso='F');
+
+ALTER TABLE ELENCO_OPZIONI
+ADD CONSTRAINT c_uniq_op
+UNIQUE(idQuizM,Opzione);
+
+ALTER TABLE QUIZ_M
+ADD CONSTRAINT c_ptC
+CHECK (PuntC>0);
+
+ALTER TABLE QUIZ_A
+ADD CONSTRAINT c_ptMax
+CHECK (PuntMax>0);
+
+ALTER TABLE TEST
+ADD CONSTRAINT CQ
+UNIQUE(idTest,NomeTest,Insegnante);
+
+CREATE VIEW ELENCO_TEST AS
+SELECT idTest, NomeTest,Insegnante
+FROM TEST;
+
+create view test_corretti as
+SELECT nomeTest, studente,visionapunteggio,r.punteggioTOT
+from test as t, risposte as r
+where  t.idTest=R.idTest and r.VerificaCorrezione=TRUE;
+
+CREATE VIEW ELENCO_RISPOSTE_STUDENTE AS
+SELECT NOMETEST,STUDENTE,RISPOSTAA,VERIFICACORREZIONE
+FROM RISPOSTE as r,TEST as t,Composto_da_qa as cdq
+WHERE R.idTest=T.idTest and R.idTest=cdq.idTest and
+	cdq.idQuizA=R.idQuizA;
+
+CREATE VIEW COMPOSIZIONE_TEST AS
+SELECT T.NOMETEST,CDQ.idQuizM,CDA.idQuizA
+FROM TEST AS T, COMPOSTO_DA_QM AS CDQ, COMPOSTO_DA_QA AS CDA
+WHERE T.idTest=CDQ.idTest and CDA.idTest=T.idTest;
+
+
+CREATE VIEW VISTA_APPOGGIO AS
+SELECT R.Studente,R.VerificaCorrezione,R.RispostaA,R.idQuizA,T.NomeTest
+from RISPOSTE AS R,COMPOSTO_DA_QA AS QA,Studente as S,Test as T
+where R.Studente=S.idStudente and R.idTest=QA.idTest and 
+	R.idQuizA = QA.idQuizA and T.idTest=R.idTest;
+
+create view Punteggio_qm as
+select r.idQuizM,r.Studente,r.puntiQM,r.RispostaM,PuntC,qm.PuntS,qm.RispostaC
+from risposte as r, quiz_m as qm
+where r.idQuizM = qm.idQuizM ;
+
+create view calcolo_punteggi_test as
+select Studente, PunteggioAssegnato, PuntiQM,PunteggioTOT
+from risposte as r
+where (studente,idQuizM,idQuizA,r.idTest) in (  select idStudente,r.idQuizM,r.idQuizA,r.idTest
+				 								from Studente ,composto_da_qa as cma,
+											  composto_da_qm as cmq
+				 								where r.studente = idStudente
+								   					and r.idQuizM=idQuizM and 
+								   					r.idQuizA=idQuizA and r.idTest=cmq.idtest
+								   					and r.idTest=cma.idTest);
+
+create view appoggio_trigger as
+SELECT r.studente,
+    r.verificacorrezione,
+    r.rispostaa,
+    r.idquiza,
+    t.nometest
+   FROM risposte r,
+    composto_da_qa qa,
+    studente s,
+    test t
+  WHERE r.studente = s.idstudente AND r.idtest = qa.idtest AND r.idquiza = qa.idquiza AND t.idtest = r.idtest;
+
+--TRIGGER CHE VERIFICA LA CORREZIONE AUTOMATICA DELLE RISPOSTE APERTE NON DATE ASSEGNANDOLE COME CORRETTE 
+create function verifica_correzione_auto() returns trigger as
+$$
+declare
+	c1 cursor for(select studente
+				  from risposte
+				  where rispostaa is null and verificacorrezione=FALSE);
+				 
+	res risposte%rowtype;
+begin
+	open c1;
+		loop
+			fetch c1 into res;
+				  
+			UPDATE RISPOSTE
+			SET VERIFICACORREZIONE= NOT VERIFICACORREZIONE
+			WHERE Studente=res.Studente;
+		exit when not found;
+		end loop;
+		close c1;
+	
+return null;
+end;
+$$ language plpgsql;
+
+CREATE TRIGGER verifica_auto
+AFTER INSERT ON RISPOSTE
+EXECUTE PROCEDURE verifica_correzione_auto();
+
+--TRIGGER CHE ASSEGNA ALLE RISPOSTE DATE AI QUIZ M IL PUNTEGGIO
+--OPPORTUNO VERIFICANDO LA CORRETTEZZA DELLA RISPOSTA
+create function correzione_qm_auto() returns trigger as
+$$
+declare 
+	c1 cursor for (select *
+				   from appoggio_trigger);
+	
+	r Punteggio_qm%rowtype;
+begin
+	open c1;
+		loop
+			fetch c1 into r;
+				if r.RispostaM=r.RispostaC THEN
+					UPDATE RISPOSTE
+					SET PuntiQM =r.PuntC
+					WHERE Studente=r.Studente;
+				else
+					UPDATE RISPOSTE
+					SET puntiQM=r.PuntS
+					WHERE Studente=r.Studente;
+				end if;
+					exit when not found;
+		end loop;
+	close c1;
+return null;
+end;
+$$ language plpgsql;
+
+create trigger correzione_automatica_rqm
+after insert on risposte
+execute procedure correzione_qm_auto();
+
+--TRIGGER CHE CALCOLA IL PUNTEGGIO OTTENUTO AD UN TEST DA UNO STUDENTE
+create function punteggio_stu() returns trigger as 
+$$
+declare 
+c1 cursor for(select *
+			 from calcolo_punteggi_test);
+			 
+r Risposte%rowtype;
+sommapq real;
+sommapa real;
+totale real;
+
+begin
+	open c1;
+		loop
+			fetch c1 into r;
+				if r.Studente= r.Studente then
+					select sum(Puntiqm),sum(PunteggioAssegnato) into sommapq,sommapa
+					from calcolo_punteggi_test
+					where Studente=r.studente;
+					
+					totale:=sommapq+sommapa;
+					
+					update risposte
+					set punteggiotot=totale
+					where Studente = r.Studente;
+				end if;
+					exit when not found;
+			end loop;
+		close c1;
+	return null;
+end;
+$$ language plpgsql;
+
+create trigger calcolo_puntegiof
+after insert on risposte
+execute procedure punteggio_stu();
