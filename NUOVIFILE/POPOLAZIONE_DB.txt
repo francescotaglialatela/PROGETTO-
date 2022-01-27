@@ -1,93 +1,100 @@
+
+create sequence idIns start 100000;
+create sequence idStu start 200000;
+create sequence idTest start 500000;
+create sequence idQuiza start 300000;
+create sequence idQuizm start 400000;
+
 INSERT INTO INSEGNANTE
 VALUES
-(1000,'Teresa','Rega','regateresa00','psW00rT!','F','1965-12-01'),
-(1001,'Antonio','Porzio','porzioantonio29','psW29pA!','M','1968-01-13'),
-(1002,'Vincenzo','De Rosa','derosavincenzo82','psW82drV!','M','1964-06-25'),
-(1003,'Luigi','Matteotti','matteottiluigi76','psW76mL!','M','1970-09-08'),
-(1004,'Giovanni','Verdoni','verdonigiovanni65','psW65vG!','M','1965-10-15');
+((nextval('idIns')),'Teresa','Rega','regateresa00','psW00rT!','F','1965-12-01'),
+((nextval('idIns')),'Antonio','Porzio','porzioantonio29','psW29pA!','M','1968-01-13'),
+((nextval('idIns')),'Vincenzo','De Rosa','derosavincenzo82','psW82drV!','M','1964-06-25'),
+((nextval('idIns')),'Luigi','Matteotti','matteottiluigi76','psW76mL!','M','1970-09-08'),
+((nextval('idIns')),'Giovanni','Verdoni','verdonigiovanni65','psW65vG!','M','1965-10-15');
 
 INSERT INTO STUDENTE
 VALUES
-(2000,'Davide','Rega','regadavide15','psW15rD!','M'),
-(2001,'Carla','Di Martino','dimartinocarla69','psW69dmC!','F'),
-(2002,'Tommaso','Lepri','lepritommaso67','psW67lP!','M'),
-(2003,'Ottavio','Silva','silvaottavio88','psW88sO!','M'),
-(2004,'Michela','Giordano','giordanomichela05','psW05gM!','F'),
-(2005,'Giuseppe','Prestini','giuseppeprestini50','psW50gP!','M'),
-(2006,'Mariano','Egregi','marianoegregi18','psW18mE!','M');
+((nextval('idStu')),'Davide','Rega','regadavide15','psW15rD!','M'),
+((nextval('idStu')),'Carla','Di Martino','dimartinocarla69','psW69dmC!','F'),
+((nextval('idStu')),'Tommaso','Lepri','lepritommaso67','psW67lP!','M'),
+((nextval('idStu')),'Ottavio','Silva','silvaottavio88','psW88sO!','M'),
+((nextval('idStu')),'Michela','Giordano','giordanomichela05','psW05gM!','F'),
+((nextval('idStu')),'Giuseppe','Prestini','giuseppeprestini50','psW50gP!','M'),
+((nextval('idStu')),'Mariano','Egregi','marianoegregi18','psW18mE!','M');
 
 INSERT INTO TEST
 VALUES
-(5000,1000,'Fisica',NULL,'TRUE'),
-(5001,1001,'Geometria',NULL,'TRUE'),
-(5002,1002,'Analisi',NULL,'TRUE'),
-(5003,1003,'Programmazione',NULL,'TRUE'),
-(5004,1004,'Inglese',NULL,'TRUE');
+((nextval('idTest')),100000,'Fisica',NULL,'TRUE'),
+((nextval('idTest')),100001,'Geometria',NULL,'TRUE'),
+((nextval('idTest')),100002,'Analisi',NULL,'TRUE'),
+((nextval('idTest')),100003,'Programmazione',NULL,'TRUE'),
+((nextval('idTest')),100004,'Inglese',NULL,'TRUE');
 
 INSERT INTO QUIZ_A
 VALUES
-(3000,'Qual è la formula della velocità media?',2,0),
-(3001,'Enunciare il Lemma di Steintz.',2,0),
-(3002,'Enunciare un teorema a piacere.',1,0),
-(3003,'Che cos è una lista?',1,0),
-(3004,'Scrivere gli aggettivi possessivi.',3,0);
+((nextval('idQuiza')),'Qual è la formula della velocità media?',2,0),
+((nextval('idQuiza')),'Enunciare il Lemma di Steintz.',2,0),
+((nextval('idQuiza')),'Enunciare un teorema a piacere.',1,0),
+((nextval('idQuiza')),'Che cos è una lista?',1,0),
+((nextval('idQuiza')),'Scrivere gli aggettivi possessivi.',3,0);
 
 INSERT INTO QUIZ_M
 VALUES
-(4000,'Seleziona la formula corretta tra quelle elencate:','a',1,0),
-(4001,'Selezionare l affermazione corretta tra quelle elencate:','b',1,0),
-(4002,'Selezionare l nunciato sbagliato:','a',1,0),
-(4003,'Che cos uno stack?','c',1,0),
-(4004,'Selezionare la frase corretta:','a',1,0);
+((nextval('idQuizm')),'Seleziona la formula corretta tra quelle elencate:','a',1,0),
+((nextval('idQuizm')),'Selezionare l affermazione corretta tra quelle elencate:','b',1,0),
+((nextval('idQuizm')),'Selezionare l nunciato sbagliato:','a',1,0),
+((nextval('idQuizm')),'Che cos uno stack?','c',1,0),
+((nextval('idQuizm')),'Selezionare la frase corretta:','a',1,0);
 
 
 Insert into elenco_opzioni values
-(4000,'a','A=VF-VI/tF-tI'),
-(4000,'b','A=V*t'),
-(4000,'c','V=a+t'),
-(4000,'d','A=Vf+Vi/tf-ti');
+(400000,'a','A=VF-VI/tF-tI'),
+(400000,'b','A=V*t'),
+(400000,'c','V=a+t'),
+(400000,'d','A=Vf+Vi/tf-ti');
 	 
 Insert into elenco_opzioni values
-(4001,'a','Uno spazio euclideo non contiene un prodotto scalare'),
-(4001,'b','Uno spazio euclideo è formato da una terna ordinata composta da uno spazio vettoriale euclideo,da un insieme di punti, e da un applicazione interna '),
-(4001,'c','Uno spazio euclideo non contiene sottospazi'),
-(4001,'d','Uno spazio euclideo non è dotato di');
+(400001,'a','Uno spazio euclideo non contiene un prodotto scalare'),
+(400001,'b','Uno spazio euclideo è formato da una terna ordinata composta da uno spazio vettoriale euclideo,da un insieme di punti, e da un applicazione interna '),
+(400001,'c','Uno spazio euclideo non contiene sottospazi'),
+(400001,'d','Uno spazio euclideo non è dotato di');
 
 Insert into elenco_opzioni values
-(4002,'a','Teorema di Waierstrass=Una funzione continua in un intervallo chiuso e limitato superiormente e inferiormente,ha minimo e massimo assoluto'),
-(4002,'b','Teorema dei valori intermedi=Una funzione continua di un intervallo chiuso con limite inferiore ha minimo e massimo'),
-(4002,'c','Teorema di derivabilità=Se una funzione è derivabile in un punto allora non è continua'),
-(4002,'d','Teorema di unicità=Se una funzione in un punto ha limite non finito allora è unico');
+(400002,'a','Teorema di Waierstrass=Una funzione continua in un intervallo chiuso e limitato superiormente e inferiormente,ha minimo e massimo assoluto'),
+(400002,'b','Teorema dei valori intermedi=Una funzione continua di un intervallo chiuso con limite inferiore ha minimo e massimo'),
+(400002,'c','Teorema di derivabilità=Se una funzione è derivabile in un punto allora non è continua'),
+(400002,'d','Teorema di unicità=Se una funzione in un punto ha limite non finito allora è unico');
 
 Insert into elenco_opzioni values
-(4003,'a','Uno stack è una struttura concreta, che può eseguire operazioni di inserimento in lista'),
-(4003,'b','Uno stack è una struttura di gestione della memoria a libero accesso per gli utenti'),
-(4003,'c','Uno stack è una struttura astratta,che ragiona come una pila,esegue azioni di tipo push e pop'),
-(4003,'d','Uno stack è una struttura iterativa gestita con gli indici in modo contiguo');
+(400003,'a','Uno stack è una struttura concreta, che può eseguire operazioni di inserimento in lista'),
+(400003,'b','Uno stack è una struttura di gestione della memoria a libero accesso per gli utenti'),
+(400003,'c','Uno stack è una struttura astratta,che ragiona come una pila,esegue azioni di tipo push e pop'),
+(400003,'d','Uno stack è una struttura iterativa gestita con gli indici in modo contiguo');
 
 Insert into elenco_opzioni values
-(4004,'a','I enjoy working during the weekend.'),
-(4004,'b',' If only I have a new house!'),
-(4004,'c','Ride in the countryside is very pleasant.'),
-(4004,'d','I wish he could stop telling lies.');
+(400004,'a','I enjoy working during the weekend.'),
+(400004,'b',' If only I have a new house!'),
+(400004,'c','Ride in the countryside is very pleasant.'),
+(400004,'d','I wish he could stop telling lies.');
 
-insert into risposte values 
-(2000,1000,3000,4000,5000,6000,'null','a',FALSE),
-(2002,1003,3003,4003,5003,6001,'null','c',FALSE),
-(2001,1004,3004,4004,5004,6002,'null','b',FALSE),
-(2003,1001,3001,4001,5001,6003,'null','a',FALSE),
-(2004,1003,3002,4002,5002,6004,'null','d',FALSE);
+insert into risposte(Studente,Insegnante,idQuizA,idQuizM,idTest,rispostam,verificacorrezione) values 
+(200000,100000,300000,400000,500000,'a',FALSE),
+(200002,100003,300003,400003,500003,'c',FALSE),
+(200001,100004,300004,400004,500004,'b',FALSE),
+(200003,100001,300001,400001,500001,'a',FALSE),
+(200004,100003,300002,400002,500002,'d',FALSE);
 
 insert into composto_da_qm values
-(4000,5000),
-(4001,5001),
-(4002,5002),
-(4003,5003),
-(4004,5004);
+(400000,500000),
+(400001,500001),
+(400002,500002),
+(400003,500003),
+(400004,500004);
 
 insert into composto_da_qa values
-(3000,5000),
-(3001,5001),
-(3002,5002),
-(3003,5003),
-(3004,5004);
+(300000,500000),
+(300001,500001),
+(300002,500002),
+(300003,500003),
+(300004,500004);
