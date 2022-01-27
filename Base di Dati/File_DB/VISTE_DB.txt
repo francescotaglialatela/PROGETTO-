@@ -1,0 +1,38 @@
+CREATE VIEW ELENCO_TEST AS
+SELECT idTest, NomeTest,Insegnante
+FROM TEST;
+
+create view test_corretti as
+SELECT nomeTest, studente,visionapunteggio
+from test as t, risposte as r
+where  t.idTest=R.idTest and r.VerificaCorrezione=TRUE;
+
+CREATE VIEW ELENCO_RISPOSTE_STUDENTE AS
+SELECT NOMETEST,STUDENTE,RISPOSTAA,VERIFICACORREZIONE
+FROM RISPOSTE as r,TEST as t,Composto_da_qa as cdq
+WHERE R.idTest=T.idTest and R.idTest=cdq.idTest and
+	cdq.idQuizA=R.idQuizA;
+
+CREATE VIEW COMPOSIZIONE_TEST AS
+SELECT T.NOMETEST,CDQ.idQuizM,CDA.idQuizA
+FROM TEST AS T, COMPOSTO_DA_QM AS CDQ, COMPOSTO_DA_QA AS CDA
+WHERE T.idTest=CDQ.idTest and CDA.idTest=T.idTest;
+
+
+CREATE VIEW VISTA_APPOGGIO AS
+SELECT R.Studente,R.VerificaCorrezione,R.RispostaA,R.idQuizA,T.NomeTest
+from RISPOSTE AS R,COMPOSTO_DA_QA AS QA,Studente as S,Test as T
+where R.Studente=S.idStudente and R.idTest=QA.idTest and 
+	R.idQuizA = QA.idQuizA and T.idTest=R.idTest;
+
+create view appoggio_trigger as
+ SELECT r.idquizm,
+    r.studente,
+    r.puntiqm,
+    r.rispostam,
+    qm.puntc,
+    qm.punts,
+    qm.rispostac
+   FROM risposte r,
+    quiz_m qm
+  WHERE r.idquizm = qm.idquizm;

@@ -1,0 +1,100 @@
+
+create sequence idIns start 100000;
+create sequence idStu start 200000;
+create sequence idTest start 500000;
+create sequence idQuiza start 300000;
+create sequence idQuizm start 400000;
+
+INSERT INTO INSEGNANTE
+VALUES
+((nextval('idIns')),'Teresa','Rega','regateresa00','psW00rT!','F','1965-12-01'),
+((nextval('idIns')),'Antonio','Porzio','porzioantonio29','psW29pA!','M','1968-01-13'),
+((nextval('idIns')),'Vincenzo','De Rosa','derosavincenzo82','psW82drV!','M','1964-06-25'),
+((nextval('idIns')),'Luigi','Matteotti','matteottiluigi76','psW76mL!','M','1970-09-08'),
+((nextval('idIns')),'Giovanni','Verdoni','verdonigiovanni65','psW65vG!','M','1965-10-15');
+
+INSERT INTO STUDENTE
+VALUES
+((nextval('idStu')),'Davide','Rega','regadavide15','psW15rD!','M'),
+((nextval('idStu')),'Carla','Di Martino','dimartinocarla69','psW69dmC!','F'),
+((nextval('idStu')),'Tommaso','Lepri','lepritommaso67','psW67lP!','M'),
+((nextval('idStu')),'Ottavio','Silva','silvaottavio88','psW88sO!','M'),
+((nextval('idStu')),'Michela','Giordano','giordanomichela05','psW05gM!','F'),
+((nextval('idStu')),'Giuseppe','Prestini','giuseppeprestini50','psW50gP!','M'),
+((nextval('idStu')),'Mariano','Egregi','marianoegregi18','psW18mE!','M');
+
+INSERT INTO TEST
+VALUES
+((nextval('idTest')),100000,'Fisica',NULL,'TRUE'),
+((nextval('idTest')),100001,'Geometria',NULL,'TRUE'),
+((nextval('idTest')),100002,'Analisi',NULL,'TRUE'),
+((nextval('idTest')),100003,'Programmazione',NULL,'TRUE'),
+((nextval('idTest')),100004,'Inglese',NULL,'TRUE');
+
+INSERT INTO QUIZ_A
+VALUES
+((nextval('idQuiza')),'Qual è la formula della velocità media?',2,0),
+((nextval('idQuiza')),'Enunciare il Lemma di Steintz.',2,0),
+((nextval('idQuiza')),'Enunciare un teorema a piacere.',1,0),
+((nextval('idQuiza')),'Che cos è una lista?',1,0),
+((nextval('idQuiza')),'Scrivere gli aggettivi possessivi.',3,0);
+
+INSERT INTO QUIZ_M
+VALUES
+((nextval('idQuizm')),'Seleziona la formula corretta tra quelle elencate:','a',1,0),
+((nextval('idQuizm')),'Selezionare l affermazione corretta tra quelle elencate:','b',1,0),
+((nextval('idQuizm')),'Selezionare l nunciato sbagliato:','a',1,0),
+((nextval('idQuizm')),'Che cos uno stack?','c',1,0),
+((nextval('idQuizm')),'Selezionare la frase corretta:','a',1,0);
+
+
+Insert into elenco_opzioni values
+(400000,'a','A=VF-VI/tF-tI'),
+(400000,'b','A=V*t'),
+(400000,'c','V=a+t'),
+(400000,'d','A=Vf+Vi/tf-ti');
+	 
+Insert into elenco_opzioni values
+(400001,'a','Uno spazio euclideo non contiene un prodotto scalare'),
+(400001,'b','Uno spazio euclideo è formato da una terna ordinata composta da uno spazio vettoriale euclideo,da un insieme di punti, e da un applicazione interna '),
+(400001,'c','Uno spazio euclideo non contiene sottospazi'),
+(400001,'d','Uno spazio euclideo non è dotato di');
+
+Insert into elenco_opzioni values
+(400002,'a','Teorema di Waierstrass=Una funzione continua in un intervallo chiuso e limitato superiormente e inferiormente,ha minimo e massimo assoluto'),
+(400002,'b','Teorema dei valori intermedi=Una funzione continua di un intervallo chiuso con limite inferiore ha minimo e massimo'),
+(400002,'c','Teorema di derivabilità=Se una funzione è derivabile in un punto allora non è continua'),
+(400002,'d','Teorema di unicità=Se una funzione in un punto ha limite non finito allora è unico');
+
+Insert into elenco_opzioni values
+(400003,'a','Uno stack è una struttura concreta, che può eseguire operazioni di inserimento in lista'),
+(400003,'b','Uno stack è una struttura di gestione della memoria a libero accesso per gli utenti'),
+(400003,'c','Uno stack è una struttura astratta,che ragiona come una pila,esegue azioni di tipo push e pop'),
+(400003,'d','Uno stack è una struttura iterativa gestita con gli indici in modo contiguo');
+
+Insert into elenco_opzioni values
+(400004,'a','I enjoy working during the weekend.'),
+(400004,'b',' If only I have a new house!'),
+(400004,'c','Ride in the countryside is very pleasant.'),
+(400004,'d','I wish he could stop telling lies.');
+
+insert into risposte(Studente,Insegnante,idQuizA,idQuizM,idTest,rispostam,verificacorrezione) values 
+(200000,100000,300000,400000,500000,'a',FALSE),
+(200002,100003,300003,400003,500003,'c',FALSE),
+(200001,100004,300004,400004,500004,'b',FALSE),
+(200003,100001,300001,400001,500001,'a',FALSE),
+(200004,100003,300002,400002,500002,'d',FALSE);
+
+insert into composto_da_qm values
+(400000,500000),
+(400001,500001),
+(400002,500002),
+(400003,500003),
+(400004,500004);
+
+insert into composto_da_qa values
+(300000,500000),
+(300001,500001),
+(300002,500002),
+(300003,500003),
+(300004,500004);
